@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tạo Nhóm Mới</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+
+        .form-card { background: white; width: 100%; max-width: 400px; padding: 40px 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
+
+        .icon-circle { width: 60px; height: 60px; background: #e7f3ff; color: #0084ff; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 20px auto; }
+
+        h2 { margin: 0 0 10px 0; color: #1c1e21; font-size: 24px; }
+        p { color: #65676B; font-size: 14px; margin-bottom: 30px; }
+
+        .form-group { text-align: left; margin-bottom: 25px; }
+        .form-group label { display: block; font-weight: 600; color: #1c1e21; margin-bottom: 8px; font-size: 14px; }
+        .form-input { width: 100%; padding: 12px 15px; border: 1px solid #ccd0d5; border-radius: 8px; font-size: 15px; outline: none; box-sizing: border-box; background: #f0f2f5; transition: 0.2s; }
+        .form-input:focus { border-color: #0084ff; background: white; box-shadow: 0 0 0 2px rgba(0, 132, 255, 0.2); }
+
+        .btn-submit { width: 100%; background: #0084ff; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.2s; }
+        .btn-submit:hover { background: #0073e6; }
+
+        .btn-cancel { display: block; margin-top: 15px; color: #65676B; text-decoration: none; font-size: 14px; font-weight: 600; }
+        .btn-cancel:hover { color: #1c1e21; }
+    </style>
+</head>
+<body>
+
+<div class="form-card">
+    <div class="icon-circle">👥</div>
+    <h2>Tạo Nhóm Mới</h2>
+
+    <form th:action="@{/room/group/create}" method="post">
+        <div class="form-group">
+            <label for="group_name">Tên nhóm</label>
+            <input type="text" id="group_name" name="group_name" class="form-input" required autocomplete="off" autofocus>
+        </div>
+
+        <button type="submit" class="btn-submit">Tạo Nhóm</button>
+        <a th:href="@{/user/homepage/groups}" class="btn-cancel">Hủy bỏ</a>
+    </form>
+</div>
+
+</body>
+</html>

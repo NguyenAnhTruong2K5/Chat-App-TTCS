@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang Đăng Ký</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 350px; }
+        h3 { text-align: center; color: #333; margin-bottom: 20px; }
+
+        .form-group { margin-bottom: 15px; }
+
+        label { display: block; margin-bottom: 5px; color: #555; font-weight: bold; font-size: 14px; }
+
+        input[type="text"], input[type="email"], input[type="password"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        button:hover { background-color: #218838; }
+
+        .error-msg { color: #FF2E2E; background-color: #ffffff; padding: 10px; border-radius: 4px; text-align: center; margin-bottom: 20px; font-size: 14px; border: 1px solid #ffffff;}
+
+        .login { text-align: center; margin-top: 20px; display: block; font-size: 14px; }
+        .login a { color: #007bff; text-decoration: none; }
+        .login a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h3>Đăng ký tài khoản mới</h3>
+
+    <form th:action="@{/register}" th:object="${userRegisterDTO}" method="post">
+
+        <div class="form-group">
+            <label for="username">Tên người dùng:</label>
+            <input type="text" id="username" th:field="*{username}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" th:field="*{email}" placeholder="abc@gmail.com" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Mật khẩu:</label>
+            <input type="password" id="password" th:field="*{password}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="bio">Giới thiệu bản thân (Không bắt buộc):</label>
+            <input type="text" id="bio" th:field="*{bio}">
+        </div>
+
+        <button type="submit">Đăng ký</button>
+    </form>
+
+    <div th:if="${error != null}" class="error-msg">
+        <span th:text="${error}"></span>
+    </div>
+
+    <div class="login">
+        Đã có tài khoản? <a th:href="@{/login}">Đăng nhập ngay</a>
+    </div>
+
+</div>
+
+</body>
+</html>

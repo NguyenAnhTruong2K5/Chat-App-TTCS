@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thành Viên Nhóm</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; padding: 40px 20px; margin: 0; }
+        .container { width: 100%; max-width: 500px; }
+
+        /* Header & Navigation */
+        .header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; }
+        .back-btn { background: white; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; text-decoration: none; color: #1c1e21; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-weight: bold; font-size: 18px; transition: 0.2s; }
+        .back-btn:hover { background: #e4e6eb; }
+        .header h2 { margin: 0; color: #1c1e21; font-size: 24px; }
+        .header p { margin: 0; color: #65676B; font-size: 14px; }
+
+        /* Card & List Styles */
+        .card { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding: 25px; }
+        .member-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f0f2f5; }
+        .member-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+        .member-info { display: flex; align-items: center; gap: 15px; }
+        .avatar { width: 40px; height: 40px; background: #e7f3ff; color: #0084ff; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 16px; }
+        .member-name { font-weight: 600; color: #1c1e21; font-size: 15px; margin: 0 0 4px 0; }
+        .member-email { color: #65676B; font-size: 13px; margin: 0; }
+
+        .badge-you { font-size: 12px; color: #0084ff; background: #e7f3ff; padding: 4px 10px; border-radius: 12px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <a th:href="@{/room/group/{group_id}/enter(group_id=${group_id})}" class="back-btn">Quay lại</a>
+        <div>
+
+            <p>Danh sách thành viên (<span th:text="${#lists.size(member-list)}"></span>)</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div th:each="member : ${member-list}" class="member-row">
+            <div class="member-info">
+                <div>
+                    <p class="member-name" th:text="${member.user.username}">Tên</p>
+                    <p class="member-email" th:text="${member.user.email}">Email</p>
+                </div>
+            </div>
+
+            <span th:if="${member.user.userId == current_user.userId}" class="badge-you">Bạn</span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

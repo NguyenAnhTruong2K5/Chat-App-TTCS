@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hồ Sơ Của Tôi</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; padding: 40px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 500px; background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+
+        h2 { text-align: center; color: #333; margin-top: 0; border-bottom: 2px solid #e9ecef; padding-bottom: 15px; }
+
+        .info-group { margin-bottom: 20px; }
+        .info-label { display: block; color: #666; font-size: 14px; margin-bottom: 5px; }
+        .info-value { display: block; font-size: 18px; font-weight: bold; color: #333; background-color: #f8f9fa; padding: 10px; border-radius: 4px; border: 1px solid #ddd; }
+
+        .btn-back { display: block; text-align: center; margin-top: 30px; color: #007bff; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Hồ Sơ Cá Nhân</h2>
+
+    <div class="info-group">
+        <span class="info-label">Tên người dùng:</span>
+        <span class="info-value" th:text="${user.username}"></span>
+    </div>
+
+    <div class="info-group">
+        <span class="info-label">Địa chỉ Email:</span>
+        <span class="info-value" th:text="${user.email}"></span>
+    </div>
+
+    <div class="info-group">
+        <span class="info-label">Giới thiệu bản thân:</span>
+        <span class="info-value" th:text="${user.bio != null and !user.bio.isEmpty() ? user.bio : 'Chưa cập nhật tiểu sử'}"></span>
+    </div>
+
+    <a th:href="@{/user/homepage}" class="btn-back">⬅ Quay lại trang chủ</a>
+</div>
+
+</body>
+</html>

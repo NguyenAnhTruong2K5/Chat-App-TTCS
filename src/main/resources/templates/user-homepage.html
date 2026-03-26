@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang Chủ - Chat App</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; }
+        .navbar { background-color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .navbar h2 { color: #0084ff; margin: 0; font-size: 22px; }
+        .btn-logout { background-color: #f0f2f5; color: #1c1e21; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-weight: bold; transition: 0.2s; }
+        .btn-logout:hover { background-color: #e4e6eb; }
+
+        .container { max-width: 700px; margin: 40px auto; padding: 0 20px; }
+        .search-box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 25px; display: flex; gap: 10px; }
+        .search-box input { flex: 1; padding: 12px 20px; border: 1px solid #ccd0d5; border-radius: 24px; font-size: 15px; outline: none; background: #f0f2f5; }
+        .search-box button { padding: 12px 24px; background: #0084ff; color: white; border: none; border-radius: 24px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .search-box button:hover { background: #0073e6; }
+
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .action-card { background: white; padding: 25px; border-radius: 12px; text-align: center; text-decoration: none; color: #1c1e21; box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: transform 0.2s; }
+        .action-card:hover { transform: translateY(-3px); border-bottom: 3px solid #0084ff; }
+        .icon { font-size: 32px; display: block; margin-bottom: 10px; }
+        .full-width { grid-column: 1 / -1; }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <h2>Chat App</h2>
+    <div>
+        <span style="margin-right: 15px; font-weight: 600;">Xin chào, <span th:text="${user.username}"></span>!</span>
+        <a th:href="@{/logout}" class="btn-logout">Đăng xuất</a>
+    </div>
+</div>
+
+<div class="container">
+    <form class="search-box" th:action="@{/user/homepage/search}" method="get">
+        <input type="text" name="search_query" placeholder="Tìm kiếm bạn bè bằng email..." th:value="${search_query}" required>
+        <button type="submit">Tìm kiếm</button>
+    </form>
+
+    <div class="action-grid">
+        <a th:href="@{/user/homepage/chat_history}" class="action-card">
+            <span class="icon">💬</span>
+            <strong>Tất cả tin nhắn</strong>
+        </a>
+        <a th:href="@{/user/homepage/inbox}" class="action-card">
+            <span class="icon">📬</span>
+            <strong>Tin nhắn mới nhận</strong>
+        </a>
+        <a th:href="@{/user/homepage/profile}" class="action-card">
+            <span class="icon">👤</span>
+            <strong>Hồ sơ cá nhân</strong>
+        </a>
+        <a th:href="@{/user/homepage/groups}" class="action-card">
+            <span class="icon">👥</span>
+            <strong>Các nhóm</strong>
+        </a>
+    </div>
+</div>
+</body>
+</html>

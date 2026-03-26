@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đoạn Chat</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; display: flex; justify-content: center; padding-top: 40px; }
+        .inbox-container { width: 100%; max-width: 500px; background-color: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e4e6eb; padding-bottom: 15px; margin-bottom: 15px; }
+        .header h2 { margin: 0; color: #1c1e21; }
+
+        .chat-row { display: flex; flex-direction: column; padding: 15px; border-radius: 8px; text-decoration: none; color: inherit; transition: background 0.2s; border-bottom: 1px solid #f0f2f5; }
+        .chat-row:hover { background-color: #f0f2f5; cursor: pointer; }
+
+        .room-name { font-size: 16px; font-weight: 600; color: #050505; margin-bottom: 5px; }
+        .latest-message { font-size: 14px; color: #65676B; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .enter-room { background-color: #0084ff; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; white-space: nowrap; transition: 0.2s; }
+        .enter-room:hover { background-color: #0073e6; }
+
+        .room-badge { font-size: 11px; padding: 3px 8px; border-radius: 10px; color: white; float: right; }
+        .badge-direct { background-color: #0084ff; }
+        .badge-group { background-color: #28a745; }
+    </style>
+</head>
+<body>
+
+<div class="inbox-container">
+    <div class="header">
+        <h2>Đoạn chat</h2>
+        <a th:href="@{/user/homepage}" style="color: #0084ff; text-decoration: none; font-weight: bold;">Trang chủ</a>
+    </div>
+
+    <div th:if="${#lists.isEmpty(chat_history)}" style="text-align: center; padding: 30px; color: #65676B;">
+        <p>Bạn chưa tham gia đoạn chat nào.</p>
+    </div>
+
+    <a th:each="item : ${chat_history}" class="chat-row">
+
+        <div>
+            <span class="room-badge" th:classappend="${item.type.name == 'DIRECT'} ? 'badge-direct' : 'badge-group'"
+                  th:text="${item.type.name == 'DIRECT'} ? 'Cá nhân' : 'Nhóm'">Badge</span>
+            <div class="room-name">
+                <strong style="color: #65676B;">Tên phòng: </strong>
+                <span th:text="${item.roomName}"></span>
+            </div>
+        </div>
+
+        <div class="sender_email">
+            <strong style="color: #65676B;">Email người gửi: </strong>
+            <span th:text="${item.senderEmail}"></span>
+        </div>
+        <div class="latest-message" th:text="${item.latestMessage}">Tin nhắn gần nhất...</div>
+        <a class="enter-room" th:href="@{/room/direct/enter(room_id=${item.roomId})}">Vào phòng chat</a>
+    </a>
+</div>
+
+</body>
+</html>

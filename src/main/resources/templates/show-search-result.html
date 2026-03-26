@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kết quả tìm kiếm</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; padding: 40px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 500px; background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+
+        .error-box { background-color: #f8d7da; color: #dc3545; padding: 15px; border-radius: 5px; text-align: center; margin-bottom: 20px; border: 1px solid #f5c6cb; }
+
+        .user-card { background-color: #f8f9fa; border: 1px solid #ddd; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 20px; }
+        .user-card h3 { margin: 0 0 5px 0; color: #333; }
+        .user-card p { margin: 0 0 15px 0; color: #666; }
+
+        .btn-chat { background-color: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block; }
+        .btn-back { display: block; text-align: center; margin-top: 20px; color: #007bff; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 style="text-align: center; margin-top: 0;">Kết quả tìm kiếm</h2>
+
+    <div th:if="${error_msg != null}" class="error-box">
+        <strong th:text="${error_msg}">Lỗi!</strong>
+    </div>
+
+    <div th:if="${found_user != null}" class="user-card">
+        <h3 th:text="${found_user.username}">Tên người dùng</h3>
+        <p th:text="${found_user.email}">email@test.com</p>
+
+        <a th:href="@{/room/direct/create(receiver_id=${found_user.userId})}" class="btn-chat">💬 Nhắn tin ngay</a>
+    </div>
+
+    <a th:href="@{/user/homepage}" class="btn-back">⬅ Quay lại trang chủ</a>
+</div>
+
+</body>
+</html>

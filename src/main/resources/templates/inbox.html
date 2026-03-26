@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hộp thư đến</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; padding: 40px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 600px; background-color: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); overflow: hidden; }
+
+        .header { background-color: #007bff; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header h3 { margin: 0; }
+        .btn-back { color: white; text-decoration: none; background-color: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 4px; }
+
+        .messages-area { padding: 20px; background-color: #e9ecef; min-height: 300px; display: flex; flex-direction: column; gap: 15px; }
+
+        .message-bubble { background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .message-content { margin: 0; color: #333; line-height: 1.4; }
+
+        .empty-state { text-align: center; color: #888; margin-top: 50px; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h3>💬 Hộp thư của tôi</h3>
+        <a th:href="@{/user/homepage}" class="btn-back">⬅ Quay lại</a>
+    </div>
+
+    <div class="messages-area">
+
+        <div th:if="${#lists.isEmpty(new_messages)}" class="empty-inbox">
+            <p>Chưa có tin nhắn nào.</p>
+        </div>
+
+        <div th:each="msg : ${new_messages}" class="message-bubble" style="display: flex; justify-content: space-between; align-items: center;">
+
+            <div>
+                <strong style="font-size: 14px; color: #007bff; margin-bottom: 5px; display: block;" th:text="${msg.senderEmail}">Email người gửi</strong>
+                <p class="message-content" th:text="${msg.content}">Nội dung tin nhắn</p>
+            </div>
+
+            <a class="reply" th:href="@{/room/direct/enter(room_id=${msg.roomId})}"
+               style="background-color: #28a745; color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px; font-size: 14px; font-weight: bold; white-space: nowrap; margin-left: 15px;">
+                Trả lời
+            </a>
+
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
