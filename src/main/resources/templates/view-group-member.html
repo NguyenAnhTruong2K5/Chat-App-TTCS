@@ -9,7 +9,7 @@
 
         /* Header & Navigation */
         .header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; }
-        .back-btn { background: white; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; text-decoration: none; color: #1c1e21; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-weight: bold; font-size: 18px; transition: 0.2s; }
+        .back-btn {width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; text-decoration: none; color: #1c1e21; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-weight: bold; font-size: 30px; transition: 0.2s; }
         .back-btn:hover { background: #e4e6eb; }
         .header h2 { margin: 0; color: #1c1e21; font-size: 24px; }
         .header p { margin: 0; color: #65676B; font-size: 14px; }
@@ -31,15 +31,15 @@
 
 <div class="container">
     <div class="header">
-        <a th:href="@{/room/group/{group_id}/enter(group_id=${group_id})}" class="back-btn">Quay lại</a>
+        <a th:href="@{/room/group/{group_id}/enter(group_id=${room_id})}" class="back-btn"> ← </a>
         <div>
 
-            <p>Danh sách thành viên (<span th:text="${#lists.size(member-list)}"></span>)</p>
+            <p>Danh sách thành viên (<span th:text="${#lists.size(member_list)}"></span>)</p>
         </div>
     </div>
 
     <div class="card">
-        <div th:each="member : ${member-list}" class="member-row">
+        <div th:each="member : ${member_list}" class="member-row">
             <div class="member-info">
                 <div>
                     <p class="member-name" th:text="${member.user.username}">Tên</p>

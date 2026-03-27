@@ -27,4 +27,5 @@ public interface RoomMemberRepo extends JpaRepository<RoomMember, RoomMemberId> 
     List<RoomMember> findByUser(User user);
     Optional<RoomMember> findByUserAndRoom(User user, Room room);
     List<RoomMember> findByRoom(Room room);
+    List<RoomMember> findByUserAndRoomNameContainingIgnoreCase(User user, String roomName);
 }

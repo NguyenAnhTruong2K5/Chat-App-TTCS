@@ -35,8 +35,11 @@ public class ChatController {
             message.setUser(sender);
             message.setRoom(room);
             message.setContent(chatMessage.getContent());
+            if (chatMessage.getBase64ImageCode() != null) {
+                message.setBase64ImageCode(chatMessage.getBase64ImageCode());
+            }
             messageRepo.save(message);
-
+            chatMessage.setCreatedAt(message.getCreatedAt().toLocalTime().toString());
             return chatMessage;
         }
 

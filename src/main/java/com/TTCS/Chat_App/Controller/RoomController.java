@@ -1,6 +1,5 @@
 package com.TTCS.Chat_App.Controller;
 
-import com.TTCS.Chat_App.DTO.ChatHistoryDTO;
 import com.TTCS.Chat_App.Model.Message;
 import com.TTCS.Chat_App.Model.Room;
 import com.TTCS.Chat_App.Model.RoomMember;
@@ -10,14 +9,14 @@ import com.TTCS.Chat_App.Repository.RoomMemberRepo;
 import com.TTCS.Chat_App.Repository.RoomRepo;
 import com.TTCS.Chat_App.Repository.UserRepo;
 import jakarta.servlet.http.HttpSession;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Controller
 @RequestMapping("/room")
@@ -100,9 +99,12 @@ public class RoomController {
             return "/user/homepage";
         }
 
-        List<Message> preMessages = messageRepo.findByRoom_RoomIdOrderByCreatedAtAsc(roomId);
+        TreeMap<LocalDate, List<Message>> preMessages = new TreeMap<>();
+        for (Message msg : messageRepo.findByRoom_RoomIdOrderByCreatedAtAsc(room.getRoomId())) {
+            preMessages.computeIfAbsent(msg.getCreatedAt().toLocalDate(), k -> new ArrayList<>()).add(msg);
+        }
 
-        model.addAttribute("chat_history", preMessages);
+        model.addAttribute("preMessages", preMessages);
         model.addAttribute("sender", sender);
         model.addAttribute("room_id", roomId);
         model.addAttribute("room_name", roomName);
@@ -127,11 +129,11 @@ public class RoomController {
         hostMember.setRoom(room);
         roomMemberRepo.save(hostMember);
 
-        return "redirect:/room/group/enter?room_id=" + room.getRoomId();
+        return "redirect:/room/group/" + room.getRoomId() + "/enter";
     }
 
-    @GetMapping("/group/enter")
-    public String enterGroup(HttpSession session, Model model, @RequestParam("room_id") String roomId) {
+    @GetMapping("/group/{group_id}/enter")
+    public String enterGroup(HttpSession session, Model model, @PathVariable("group_id") String roomId) {
         User sender = (User) session.getAttribute("loggedInUser");
         if (sender == null) {
             return "redirect:/login";
@@ -142,7 +144,10 @@ public class RoomController {
             return "redirect:/user/homepage/groups";
         }
 
-        List<Message> preMessages = messageRepo.findByRoom_RoomIdOrderByCreatedAtAsc(roomId);
+        TreeMap<LocalDate, List<Message>> preMessages = new TreeMap<>();
+        for (Message msg : messageRepo.findByRoom_RoomIdOrderByCreatedAtAsc(group.getRoomId())) {
+            preMessages.computeIfAbsent(msg.getCreatedAt().toLocalDate(), k -> new ArrayList<>()).add(msg);
+        }
 
         model.addAttribute("pre_messages", preMessages);
         model.addAttribute("sender", sender);
@@ -158,11 +163,6 @@ public class RoomController {
             return "redirect:/login";
         }
         return "create-group";
-    }
-
-    @GetMapping("/group/search")
-    public String searchGroup(HttpSession session, @RequestParam("search_query") String groupName, Model model) {
-        return "user-groups";
     }
 
     @PostMapping("/group/{group_id}/leave")
@@ -237,7 +237,7 @@ public class RoomController {
 
         List<RoomMember> roomMemberList = roomMemberRepo.findByRoom(room);
         model.addAttribute("room_id", roomId);
-        model.addAttribute("curr_user", currentUser);
+        model.addAttribute("current_user", currentUser);
         model.addAttribute("member_list", roomMemberList);
         return "view-group-member";
     }

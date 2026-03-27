@@ -19,4 +19,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setAllowedOriginPatterns("*")
                 .withSockJS();
     }
+
+    @Override
+    public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
+        // Increase the maximum message size to 2MB (2 * 1024 * 1024)
+        registration.setMessageSizeLimit(2097152);
+
+        // Increase the buffer size to 2MB
+        registration.setSendBufferSizeLimit(2097152);
+
+        // Slightly increase the timeout limit to allow time for images to upload (20 seconds)
+        registration.setSendTimeLimit(20000);
+    }
 }

@@ -3,6 +3,8 @@ package com.TTCS.Chat_App.DTO;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalTime;
+
 @Getter
 @Setter
 public class MessageDTO {
@@ -11,4 +13,5 @@ public class MessageDTO {
     private String userEmail;
     private String content;
     private String createdAt;
+    private String base64ImageCode;
 }

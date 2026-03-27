@@ -69,7 +69,7 @@
                 <p class="group-name" th:text="${rm.roomName}">Tên nhóm</p>
             </div>
         </div>
-        <a class="btn-enter" th:href="@{/room/group/enter(room_id=${rm.roomId})}">Vào nhóm</a>
+        <a class="btn-enter" th:href="@{/room/group/{group_id}/enter(group_id=${rm.roomId})}">Vào nhóm</a>
     </div>
 
 </div>

@@ -32,6 +32,9 @@ public class Message {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(columnDefinition = "LONGTEXT")
+    private String base64ImageCode;
+
     @PrePersist
     public void generateId() {
         if (this.messageId == null) {

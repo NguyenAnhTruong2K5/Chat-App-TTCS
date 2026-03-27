@@ -135,13 +135,13 @@ public class UserController {
     }
 
     @GetMapping("/homepage/groups")
-    public String openGroupPage(HttpSession session, Model model) {
+    public String openGroupPage(HttpSession session, Model model, @RequestParam(value="search_query", required=false) String roomName) {
         User user = (User) session.getAttribute("loggedInUser");
         if (user == null) {
             return "redirect:/login";
         }
 
-        List<RoomMember> roomMembers = roomMemberRepo.findByUser(user);
+        List<RoomMember> roomMembers = roomName == null ? roomMemberRepo.findByUser(user) : roomMemberRepo.findByUserAndRoomNameContainingIgnoreCase(user, roomName);
         List<Room> userGroups = new ArrayList<>();
 
         for (RoomMember rm : roomMembers) {
@@ -150,6 +150,7 @@ public class UserController {
             }
         }
 
+        model.addAttribute("search_query", roomName);
         model.addAttribute("groups", userGroups);
         return "user-groups";
     }
