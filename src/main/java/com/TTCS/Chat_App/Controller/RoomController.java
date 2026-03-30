@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -26,7 +27,7 @@ public class RoomController {
     private final RoomMemberRepo roomMemberRepo;
     private final MessageRepo messageRepo;
     @GetMapping("/direct/create")
-    public String openChatPage(HttpSession session, Model model, @RequestParam("receiver_id") String receiverId) {
+    public String createDirectRoom(HttpSession session, Model model, @RequestParam("receiver_id") String receiverId) {
         User sender = (User) session.getAttribute("loggedInUser");
         if (sender == null) {
             return "redirect:/login";
@@ -44,12 +45,7 @@ public class RoomController {
         ).orElse(null);
 
         if (existingRoom != null) {
-            model.addAttribute("room_id", existingRoom.getRoomId());
-            model.addAttribute("sender", sender);
-            model.addAttribute("receiver", receiver);
-            List<Message> preMessages = messageRepo.findByRoom_RoomIdOrderByCreatedAtAsc(existingRoom.getRoomId());
-            model.addAttribute("chat_history", preMessages);
-            return "direct-chat-room";
+            return "redirect:/room/direct/" + existingRoom.getRoomId() + "/enter";
         }
 
         Room directRoom = new Room();
@@ -68,15 +64,11 @@ public class RoomController {
         receivingMember.setRoomName(sender.getEmail());
         roomMemberRepo.save(receivingMember);
 
-        model.addAttribute("room_id", directRoom.getRoomId());
-        model.addAttribute("sender", sender);
-        model.addAttribute("receiver", receiver);
-
-        return "direct-chat-room";
+        return "redirect:/room/direct/" + directRoom.getRoomId() + "/enter";
     }
 
-    @GetMapping("/direct/enter")
-    public String enterChatRoom(HttpSession session, @RequestParam("room_id") String roomId, Model model) {
+    @GetMapping("/direct/{room_id}/enter")
+    public String enterChatRoom(HttpSession session, Model model, @PathVariable("room_id") String roomId) {
         User sender = (User) session.getAttribute("loggedInUser");
         if (sender == null) {
             return "redirect:/login";
@@ -89,13 +81,12 @@ public class RoomController {
 
         RoomMember sender_member = roomMemberRepo.findByUserAndRoom(sender, room).orElse(null);
         if (sender_member == null) {
-            return "redirect:/user/homepage/";
+            return "redirect:/user/homepage";
         }
 
         String roomName = sender_member.getRoomName();
         if (roomRepo.findById(roomId).isEmpty()) {
-            model.addAttribute("error_msg", "Không tìm thấy phòng chat!");
-            return "/user/homepage";
+            return "redirect:/user/homepage";
         }
 
         TreeMap<LocalDate, List<Message>> preMessages = new TreeMap<>();
@@ -143,11 +134,13 @@ public class RoomController {
             return "redirect:/user/homepage/groups";
         }
 
+        int memberCount = roomMemberRepo.findByRoom(group).size();
         TreeMap<LocalDate, List<Message>> preMessages = new TreeMap<>();
         for (Message msg : messageRepo.findByRoom_RoomIdOrderByCreatedAtAsc(group.getRoomId())) {
             preMessages.computeIfAbsent(msg.getCreatedAt().toLocalDate(), k -> new ArrayList<>()).add(msg);
         }
 
+        model.addAttribute("member_count", memberCount);
         model.addAttribute("pre_messages", preMessages);
         model.addAttribute("sender", sender);
         model.addAttribute("room_name", group.getRoomName());
@@ -181,7 +174,7 @@ public class RoomController {
     }
 
     @PostMapping("/group/{group_id}/add_member")
-    public String showMemberSearchBox(Model model, HttpSession session, @RequestParam("newMemberEmail") String newMemberEmail, @PathVariable("group_id") String roomId) {
+    public String showMemberSearchBox(RedirectAttributes redirectAttributes, HttpSession session, @RequestParam("newMemberEmail") String newMemberEmail, @PathVariable("group_id") String roomId) {
         User currentUser = (User) session.getAttribute("loggedInUser");
         if (currentUser == null) {
             return "redirect:/login";
@@ -194,19 +187,13 @@ public class RoomController {
 
         User newMember = userRepo.findByEmail(newMemberEmail).orElse(null);
         if (newMember == null) {
-            model.addAttribute("error_msg", "Không tìm thấy người dùng, vui lòng nhập lại!");
-            model.addAttribute("room_id", roomId);
-            model.addAttribute("room_name", room.getRoomName());
-            model.addAttribute("sender", currentUser);
-            return "group-chat-room";
+            redirectAttributes.addFlashAttribute("error_msg", "Không tìm thấy người dùng, vui lòng nhập lại!");
+            return "redirect:/room/group/" + room.getRoomId() + "/enter";
         }
 
         if (roomMemberRepo.findByUserAndRoom(newMember, room).isPresent()) {
-            model.addAttribute("error_msg", "Người dùng đã tồn tại trong nhóm");
-            model.addAttribute("room_id", roomId);
-            model.addAttribute("room_name", room.getRoomName());
-            model.addAttribute("sender", currentUser);
-            return "group-chat-room";
+            redirectAttributes.addFlashAttribute("error_msg", "Người dùng đã tồn tại trong nhóm");
+            return "redirect:/room/group/" + room.getRoomId() + "/enter";
         }
 
         RoomMember newRoomMember = new RoomMember();
@@ -215,11 +202,8 @@ public class RoomController {
         newRoomMember.setRoomName(room.getRoomName());
         roomMemberRepo.save(newRoomMember);
 
-        model.addAttribute("success_msg", "Thêm thành viên thành công!");
-        model.addAttribute("room_id", roomId);
-        model.addAttribute("room_name", room.getRoomName());
-        model.addAttribute("sender", currentUser);
-        return "group-chat-room";
+        redirectAttributes.addFlashAttribute("success_msg", "Thêm thành viên thành công!");
+        return "redirect:/room/group/" + room.getRoomId() + "/enter";
     }
 
     @GetMapping("/group/{group_id}/view_member")

@@ -40,7 +40,7 @@
                 <p class="message-content" th:text="${msg.content}">Nội dung tin nhắn</p>
             </div>
 
-            <a class="reply" th:href="@{/room/direct/enter(room_id=${msg.roomId})}"
+            <a class="reply" th:href="@{/room/direct/{room_id}/enter(room_id=${msg.roomId})}"
                style="background-color: #28a745; color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px; font-size: 14px; font-weight: bold; white-space: nowrap; margin-left: 15px;">
                 Trả lời
             </a>

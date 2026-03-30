@@ -51,7 +51,7 @@
             <span th:text="${item.senderEmail}"></span>
         </div>
         <div class="latest-message" th:text="${item.latestMessage}">Tin nhắn gần nhất...</div>
-        <a class="enter-room" th:href="@{/room/direct/enter(room_id=${item.roomId})}">Vào phòng chat</a>
+        <a class="enter-room" th:href="@{/room/direct/{room_id}/enter(room_id=${item.roomId})}">Vào phòng chat</a>
     </a>
 </div>
 

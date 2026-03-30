@@ -84,6 +84,12 @@
         </div>
     </div>
 
+    <div th:if="${member_count < 3}" style="padding: 20px; background-color: #fff3cd; color: #856404; text-align: center; border-top: 1px solid #ffeeba; font-size: 15px;">
+        <span style="font-size: 20px; display: block; margin-bottom: 5px;"></span>
+        <strong>Nhóm chưa đủ người!</strong><br>
+        Nhóm cần có ít nhất 3 thành viên để bắt đầu trò chuyện.
+    </div>
+
     <div class="chat-messages" id="messageArea">
         <th:block th:each="entry : ${pre_messages}">
 
@@ -116,17 +122,19 @@
         </th:block>
     </div>
 
-    <div id="imagePreviewContainer" style="display: none; padding: 10px 20px; background: #f0f2f5; border-top: 1px solid #e4e6eb; position: relative;">
-        <img id="previewImage" src="" style="max-height: 80px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);" />
-        <button onclick="removeAttachedImage()" style="position: absolute; top: 5px; left: 15px; background: #fa3e3e; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-weight: bold; font-size: 10px; display: flex; justify-content: center; align-items: center;">X</button>
-    </div>
+    <th:block th:if="${member_count >= 3}">
+        <div id="imagePreviewContainer" style="display: none; padding: 10px 20px; background: #f0f2f5; border-top: 1px solid #e4e6eb; position: relative;">
+            <img id="previewImage" src="" style="max-height: 80px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);" />
+            <button onclick="removeAttachedImage()" style="position: absolute; top: 5px; left: 15px; background: #fa3e3e; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-weight: bold; font-size: 10px; display: flex; justify-content: center; align-items: center;">X</button>
+        </div>
 
-    <div class="chat-input-area">
-        <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="previewImageFile(event)">
-        <button type="button" onclick="document.getElementById('imageInput').click()" style="background: #e4e6eb; color: #1c1e21; padding: 10px; border-radius: 50%;">🖼️</button>
-        <input type="text" id="messageInput" placeholder="Nhập tin nhắn..." autocomplete="off" autofocus>
-        <button onclick="sendMessage()">Gửi</button>
-    </div>
+        <div class="chat-input-area">
+            <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="previewImageFile(event)">
+            <button type="button" onclick="document.getElementById('imageInput').click()" style="background: #e4e6eb; color: #1c1e21; padding: 10px; border-radius: 50%;">🖼️</button>
+            <input type="text" id="messageInput" placeholder="Nhập tin nhắn..." autocomplete="off" autofocus>
+            <button onclick="sendMessage()">Gửi</button>
+        </div>
+    </th:block>
 
 </div>
 
@@ -271,10 +279,12 @@
 
 <script th:if="${success_msg != null}" th:inline="javascript">
     alert([[${success_msg}]]);
+    window.location.href = /*[[@{/room/group/{group_id}/enter(group_id=${room_id})}]]*/ '/';
 </script>
 
 <script th:if="${error_msg != null}" th:inline="javascript">
     alert([[${error_msg}]]);
+    window.location.href = /*[[@{/room/group/{group_id}/enter(group_id=${room_id})}]]*/ '/';
 </script>
 
 </body>

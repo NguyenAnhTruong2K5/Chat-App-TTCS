@@ -23,12 +23,12 @@
     <h2 style="text-align: center; margin-top: 0;">Kết quả tìm kiếm</h2>
 
     <div th:if="${error_msg != null}" class="error-box">
-        <strong th:text="${error_msg}">Lỗi!</strong>
+        <strong th:text="${error_msg}">Không tìm thấy người dùng!</strong>
     </div>
 
     <div th:if="${found_user != null}" class="user-card">
         <h3 th:text="${found_user.username}">Tên người dùng</h3>
-        <p th:text="${found_user.email}">email@test.com</p>
+        <p th:text="${found_user.email}">Email nguoi dung</p>
 
         <a th:href="@{/room/direct/create(receiver_id=${found_user.userId})}" class="btn-chat">💬 Nhắn tin ngay</a>
     </div>
