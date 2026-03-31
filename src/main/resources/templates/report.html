@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo người dùng</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .report-container {
+            background-color: white;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .report-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .report-header h2 {
+            margin: 0;
+            color: #1c1e21;
+            font-size: 24px;
+        }
+
+        .report-header p {
+            margin: 8px 0 0 0;
+            color: #65676B;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #1c1e21;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccd0d5;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 120px;
+            outline: none;
+            background-color: #f0f2f5;
+        }
+
+        .form-group textarea:focus {
+            border-color: #0084ff;
+            background-color: #ffffff;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .btn-submit {
+            flex: 1;
+            background-color: #fa3e3e; /* Red color for reporting to indicate severity */
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #d93030;
+        }
+
+        .btn-cancel {
+            flex: 1;
+            background-color: #e4e6eb;
+            color: #1c1e21;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background-color: #d8dadf;
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+    <div class="report-header">
+        <h2>Báo cáo vi phạm</h2>
+        <p>Giúp chúng tôi giữ an toàn cho cộng đồng.</p>
+    </div>
+
+    <form th:action="@{/user/report}" th:object="${reportDTO}" method="post">
+        <input type="hidden" th:field="*{reportedUserId}" />
+
+        <div class="form-group">
+            <label for="content">Lý do báo cáo:</label>
+            <textarea id="content" th:field="*{content}" required
+                      placeholder="Vui lòng mô tả chi tiết lý do bạn báo cáo người dùng này..."></textarea>
+        </div>
+
+        <div class="action-buttons">
+            <a th:href="@{/user/homepage}" class="btn-cancel">Hủy</a>
+            <button type="submit" class="btn-submit">Gửi báo cáo</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết báo cáo</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f0f2f5; padding: 40px; display: flex; justify-content: center; }
+        .card { background: white; width: 600px; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h2 { margin-top: 0; color: #1c1e21; border-bottom: 1px solid #e4e6eb; padding-bottom: 15px; }
+        .info-group { margin-bottom: 20px; }
+        .info-group label { display: block; font-weight: bold; color: #65676B; font-size: 13px; text-transform: uppercase; margin-bottom: 5px; }
+        .info-group div { font-size: 16px; color: #1c1e21; background: #f8f9fa; padding: 12px; border-radius: 8px; border: 1px solid #e4e6eb; }
+        .btn-back { display: inline-block; background: #e4e6eb; color: #1c1e21; padding: 10px 20px; text-decoration: none; border-radius: 8px; font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+<div class="card" th:if="${report != null}">
+    <h2>Chi tiết báo cáo</h2>
+    <div class="info-group">
+        <label>Nội dung / Lý do</label>
+        <div th:text="${report.content}" style="min-height: 100px; white-space: pre-wrap;"></div>
+    </div>
+
+    <a th:href="@{/admin/view_report}" class="btn-back">⬅ Quay lại danh sách</a>
+</div>
+</body>
+</html>

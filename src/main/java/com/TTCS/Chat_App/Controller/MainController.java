@@ -77,6 +77,10 @@ public class MainController {
         }
 
         session.setAttribute("loggedInUser", user);
+        if (user.getRole() == User.Role.ADMIN) {
+            return "redirect:/admin/homepage";
+        }
+
         return "redirect:/user/homepage";
     }
 

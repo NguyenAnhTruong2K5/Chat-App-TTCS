@@ -104,7 +104,7 @@ public class RoomController {
     @PostMapping("/group/create")
     public String createGroup(HttpSession session, Model model, @RequestParam("group_name") String roomName) {
         User host = (User) session.getAttribute("loggedInUser");
-        if (host == null) {
+        if (host == null ) {
             return "redirect:/login";
         }
 

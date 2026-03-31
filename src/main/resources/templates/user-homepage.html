@@ -57,5 +57,15 @@
         </a>
     </div>
 </div>
+
+<div>
+    <script th:if="${success_msg != null}" th:inline="javascript">
+        alert([[${success_msg}]]);
+    </script>
+
+    <script th:if="${error_msg != null}" th:inline="javascript">
+        alert([[${error_msg}]]);
+    </script>
+</div>
 </body>
 </html>

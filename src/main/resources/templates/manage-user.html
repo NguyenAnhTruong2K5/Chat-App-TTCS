@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý người dùng</title>
+    <style>
+        /* Reuse the same body and sidebar CSS from above! */
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f0f2f5; margin: 0; display: flex; height: 100vh; }
+        .sidebar { width: 250px; background-color: #ffffff; padding: 20px; box-shadow: 2px 0 5px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 10px; }
+        .sidebar h2 { margin-top: 0; color: #1c1e21; font-size: 20px; padding-bottom: 20px; border-bottom: 1px solid #e4e6eb; }
+        .sidebar a { text-decoration: none; color: #1c1e21; padding: 12px 15px; border-radius: 8px; font-weight: 600; transition: 0.2s; }
+        .sidebar a:hover, .sidebar a.active { background-color: #e7f3ff; color: #0084ff; }
+        .sidebar a.logout { color: #fa3e3e; margin-top: auto; }
+
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+
+        /* Table Styles */
+        .table-container { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 15px 20px; border-bottom: 1px solid #e4e6eb; }
+        th { background-color: #f8f9fa; color: #65676B; font-size: 14px; text-transform: uppercase; }
+        td { color: #1c1e21; font-size: 15px; }
+
+        .badge { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .bg-green { background-color: #e6f4ea; color: #1e8e3e; }
+        .bg-red { background-color: #fce8e6; color: #d93025; }
+
+        .btn { padding: 8px 15px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: bold; transition: 0.2s; }
+        .btn-ban { background-color: #fa3e3e; color: white; }
+        .btn-ban:hover { background-color: #d93030; }
+        .btn-unban { background-color: #28a745; color: white; }
+        .btn-unban:hover { background-color: #218838; }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <h2>Trang quản lý</h2>
+    <a th:href="@{/admin/homepage}">📊 Tổng quan</a>
+    <a th:href="@{/admin/manage_user}" class="active">👥 Quản lý người dùng</a>
+    <a th:href="@{/admin/view_report}">🚩 Quản lý báo cáo</a>
+    <a th:href="@{/logout}" class="logout">🚪 Đăng xuất</a>
+</div>
+
+<div class="main-content">
+    <h1>Quản lý Người dùng</h1>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${user_list}">
+                <td th:text="${user.userId}">ID</td>
+                <td th:text="${user.email}">Email</td>
+
+                <td>
+                    <span th:if="${user.status.name() == 'ALLOWED'}" class="badge bg-green">Hoạt động</span>
+                    <span th:if="${user.status.name() == 'BANNED'}" class="badge bg-red">Bị Cấm</span>
+                </td>
+                <td>
+                    <th:block th:if="${user.role.name() != 'ADMIN'}">
+                        <a th:if="${user.status.name() == 'ALLOWED'}"
+                           th:href="@{/admin/manage_user/set_status(user_id=${user.userId})}"
+                           class="btn btn-ban" onclick="return confirm('Bạn có chắc muốn cấm người dùng này?');">Khóa Tài Khoản</a>
+
+                        <a th:if="${user.status.name() == 'BANNED'}"
+                           th:href="@{/admin/manage_user/set_status(user_id=${user.userId})}"
+                           class="btn btn-unban">Mở Khóa</a>
+                    </th:block>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div>
+    <script th:if="${success_msg != null}" th:inline="javascript">
+        alert([[${success_msg}]]);
+    </script>
+
+    <script th:if="${error_msg != null}" th:inline="javascript">
+        alert([[${error_msg}]]);
+    </script>
+</div>
+</body>
+</html>
