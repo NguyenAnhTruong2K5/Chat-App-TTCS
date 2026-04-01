@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Report {
     @Id
-    @Column(name = "report_id", columnDefinition = "CHAR(7)")
+    @Column(name = "report_id", columnDefinition = "CHAR(34)")
     private String reportId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,7 +26,7 @@ public class Report {
     @JoinColumn(name = "reported_user_id")
     private User reportedUser;
 
-    @Column(name = "content", length = 255)
+    @Column(name = "content", length = 255, nullable = false)
     private String content;
 
     @Column(name = "created_at", length = 20)
@@ -38,7 +39,7 @@ public class Report {
         }
 
         if (this.reportId == null) {
-            this.reportId = "RE" + RandomStringUtils.randomNumeric(5);
+            this.reportId = "RE" + UUID.randomUUID().toString().replace("-", "");
         }
     }
 }

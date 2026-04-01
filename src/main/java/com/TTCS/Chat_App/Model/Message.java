@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "message")
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Message {
     @Id
-    @Column(name = "message_id", columnDefinition = "CHAR(6)")
+    @Column(name = "message_id", columnDefinition = "CHAR(33)")
     private String messageId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,7 +39,7 @@ public class Message {
     @PrePersist
     public void generateId() {
         if (this.messageId == null) {
-            this.messageId = "M" + RandomStringUtils.randomNumeric(5);
+            this.messageId = "M" + UUID.randomUUID().toString().replace("-", "");
         }
 
         if (createdAt == null) {

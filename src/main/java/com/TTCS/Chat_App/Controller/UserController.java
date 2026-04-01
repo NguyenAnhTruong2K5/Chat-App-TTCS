@@ -60,7 +60,7 @@ public class UserController {
 
         User user = userRepo.findByEmail(keyWord).orElse(null);
 
-        if (user == null) {
+        if (user == null || user.getRole() == User.Role.ADMIN) {
             model.addAttribute("error_msg", "Không tìm thấy người dùng!");
             return "show-search-result";
         }

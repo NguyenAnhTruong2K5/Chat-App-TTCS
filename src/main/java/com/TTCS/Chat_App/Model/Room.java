@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "room")
@@ -19,7 +20,7 @@ public class Room {
     }
 
     @Id
-    @Column(name = "room_id", columnDefinition = "CHAR(6)")
+    @Column(name = "room_id", columnDefinition = "CHAR(33)")
     private String roomId;
 
     @Column(name = "name", length = 255)
@@ -35,7 +36,7 @@ public class Room {
     @PrePersist
     public void generateId() {
         if (roomId == null) {
-            this.roomId = "R" + RandomStringUtils.randomNumeric(5);
+            this.roomId = "R" + UUID.randomUUID().toString().replace("-", "");
         }
 
         if (createdAt == null) {

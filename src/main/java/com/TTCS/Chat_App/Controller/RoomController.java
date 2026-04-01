@@ -186,7 +186,7 @@ public class RoomController {
         }
 
         User newMember = userRepo.findByEmail(newMemberEmail).orElse(null);
-        if (newMember == null) {
+        if (newMember == null || newMember.getRole() == User.Role.ADMIN) {
             redirectAttributes.addFlashAttribute("error_msg", "Không tìm thấy người dùng, vui lòng nhập lại!");
             return "redirect:/room/group/" + room.getRoomId() + "/enter";
         }

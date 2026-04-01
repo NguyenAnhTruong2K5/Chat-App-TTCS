@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "user")
 @Getter
@@ -22,7 +24,7 @@ public class User {
     }
 
     @Id
-    @Column(name = "user_id", columnDefinition = "CHAR(6)")
+    @Column(name = "user_id", columnDefinition = "CHAR(33)")
     private String userId;
 
     @Column(name = "username", length = 60)
@@ -48,7 +50,7 @@ public class User {
     @PrePersist
     public void prePersist() {
         if (this.userId == null) {
-            this.userId = "U" + RandomStringUtils.randomNumeric(5);
+            this.userId = "U" + UUID.randomUUID().toString().replace("-", "");
         }
 
         if (this.role == null) {
